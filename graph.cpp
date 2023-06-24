@@ -1,8 +1,10 @@
 #include "graph.hpp"
 
+
 Graph::Graph(int vertices_number) : vertices_number(vertices_number),
     adj_list(vertices_number+5), distance(vertices_number + 5),
-    predecessor(vertices_number + 5){}
+    predecessor(vertices_number + 5), key(vertices_number + 5),
+    parent(vertices_number + 5){}
 vector<vector<Node>> Graph::getAdjList(){ return adj_list;};
 void Graph::addEdge(int v1, int v2, float weight){
     if(weight < 0) throw invalid_argument("Negative weight is not allowed.");
@@ -68,4 +70,54 @@ vector<int> Graph::pathTo(int v){
 
     reverse(path.begin(), path.end());
     return path;
+}
+void Graph::printMST(){
+    float total = 0;
+    printf("Edge \tWeight\n");
+    for (int i = 2; i <= vertices_number; i++) {
+        printf("%d - %d \t%.2f \n", parent[i], i, key[i]);
+        total += key[i];
+    }
+    cout << "total weight: " << total << "\n";
+}
+
+void Graph::primMST() {
+    fill(key.begin(), key.end(), numeric_limits<float>::max());
+    fill(parent.begin(), parent.end(), -1);
+    // vertex 1 is the root
+    key[1] = 0;
+
+    priority_queue<Node, vector<Node>, GreaterNode> pq;
+    pq.push({1, 0});
+
+    while (!pq.empty()) {
+        int u = pq.top().index;
+        pq.pop();
+        inMST.insert(u);
+
+        for (const auto& nd : adj_list[u]) {
+            int v = nd.index;
+            float weight = nd.cost;
+
+            if (!inMST.count(v) && weight < key[v]) {
+                parent[v] = u;
+                key[v] = weight;
+                pq.push({v, key[v]});
+            }
+        }
+    }
+}
+
+int Graph::getMinKeyVertex(){
+    float min_key = numeric_limits<float>::max();
+    int min_index = -1;
+
+    for (int v = 1; v <= vertices_number; v++) {
+        if (!inMST.count(v) && key[v] < min_key) {
+            min_key = key[v];
+            min_index = v;
+        }
+    }
+
+    return min_index;
 }

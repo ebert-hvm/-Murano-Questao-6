@@ -1,10 +1,10 @@
 #include "graph.hpp"
 
-int main(){
+int main(int argc, char *argv[]){
     int n;
     fstream file;
-
-    file.open("grafo_W_2.txt", ios::in);
+    if(argc != 2) return 0;
+    file.open(argv[1], ios::in);
     file >> n;
     Graph graph(n);
 
@@ -15,15 +15,16 @@ int main(){
         graph.addEdge(v1, v2, weight);
     }
     // cout << graph;
-    int source, dest;
-    cin >> source >> dest;
-    graph.dijkstra(source);
+    // int source, dest;
+    // cin >> source >> dest;
+    // graph.dijkstra(source);
 
-    cout << "distance: " << graph.distanceTo(dest) << "\n";
-    cout << "path: ";
-    for(const int & v : graph.pathTo(dest)) cout << v << " ";
-    cout << "\n";
-
+    // cout << "distance: " << graph.distanceTo(dest) << "\n";
+    // cout << "path: ";
+    // for(const int & v : graph.pathTo(dest)) cout << v << " ";
+    // cout << "\n";
+    graph.primMST();
+    graph.printMST();
     file.close();
     return 0;
 }

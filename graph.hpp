@@ -9,7 +9,7 @@
 #include <limits>
 #include <algorithm>
 #include <iomanip> 
-
+#include <cstdio>
 using namespace std;
 
 struct Node{
@@ -25,13 +25,19 @@ struct GreaterNode {
 
 
 class Graph{
-    private:
+private:
     int vertices_number;
     vector<vector<Node>> adj_list;
+    // Dijkstra attributes
     int source;
     vector<float> distance;
     vector<int> predecessor;
-    public:
+    // Primm attributes
+    vector<int> parent;
+    vector<float> key;
+    unordered_set<int> inMST;
+    int getMinKeyVertex();
+public:
     Graph(int n);
     void addEdge(int v1, int v2, float weight);
     friend ostream& operator<<(ostream& os, Graph obj);
@@ -39,6 +45,8 @@ class Graph{
     float distanceTo(int v);
     vector<int> pathTo(int v);
     vector<vector<Node>> getAdjList();
+    void primMST();
+    void printMST();
 };
 
 #endif
