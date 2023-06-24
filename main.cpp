@@ -4,7 +4,7 @@ int main(){
     int n;
     fstream file;
 
-    file.open("grafo_W_3.txt", ios::in);
+    file.open("grafo_W_2.txt", ios::in);
     file >> n;
     Graph graph(n);
 
@@ -15,9 +15,15 @@ int main(){
         graph.addEdge(v1, v2, weight);
     }
     // cout << graph;
-    graph.dijkstra(2);
+    int source, dest;
+    cin >> source >> dest;
+    graph.dijkstra(source);
 
-    cout << setprecision(2) << graph.distanceTo(3) << "\n";
+    cout << "distance: " << graph.distanceTo(dest) << "\n";
+    cout << "path: ";
+    for(const int & v : graph.pathTo(dest)) cout << v << " ";
+    cout << "\n";
+
     file.close();
     return 0;
 }

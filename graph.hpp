@@ -30,6 +30,7 @@ class Graph{
     vector<vector<Node>> adj_list;
     int source;
     vector<float> distance;
+    vector<int> predecessor;
     public:
     Graph(int n);
     void addEdge(int v1, int v2, float weight);
