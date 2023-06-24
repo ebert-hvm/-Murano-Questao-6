@@ -10,6 +10,9 @@
 #include <algorithm>
 #include <iomanip> 
 #include <cstdio>
+#include <chrono>
+#include <numeric>
+
 using namespace std;
 
 struct Node{
@@ -32,6 +35,7 @@ private:
     int source;
     vector<float> distance;
     vector<int> predecessor;
+    float eccentricity;
     // Primm attributes
     vector<int> parent;
     vector<float> key;
@@ -40,13 +44,15 @@ private:
 public:
     Graph(int n);
     void addEdge(int v1, int v2, float weight);
+    vector<vector<Node>> getAdjList();
+    float getEccentricity();
     friend ostream& operator<<(ostream& os, Graph obj);
     void dijkstra(int source);
     float distanceTo(int v);
     vector<int> pathTo(int v);
-    vector<vector<Node>> getAdjList();
     void primMST();
-    void printMST();
+    void printMST(ostream& os);
+    float getMSTWeight();
 };
 
 #endif

@@ -9,7 +9,7 @@ vector<vector<Node>> Graph::getAdjList(){ return adj_list;};
 void Graph::addEdge(int v1, int v2, float weight){
     if(weight < 0) throw invalid_argument("Negative weight is not allowed.");
     if (v1 <= 0 || v1 > vertices_number || v2 <= 0 || v2 > vertices_number) {
-        throw std::out_of_range("Vertex index is out of range.");
+        throw out_of_range("Vertex index is out of range.");
     }
 
     Node nd1 = {v1, weight}, nd2 = {v2, weight};
@@ -49,6 +49,7 @@ void Graph::dijkstra(int source){
             //cout << "vizinho: " << v << " ";
             if (distance[v] > distance[u] + weight) {
                 distance[v] = distance[u] + weight;
+                eccentricity = max(eccentricity, distance[v]);
                 predecessor[v] = u;
                 pq.push({v, distance[v]});
               //  cout << "foi "<< distance[v] <<"\n";
@@ -71,14 +72,23 @@ vector<int> Graph::pathTo(int v){
     reverse(path.begin(), path.end());
     return path;
 }
-void Graph::printMST(){
+
+float Graph::getEccentricity(){
+    return eccentricity;
+}
+
+void Graph::printMST(ostream& os){
     float total = 0;
-    printf("Edge \tWeight\n");
+    os << "Edge" << setw(10) << "Weight" << "\n";
     for (int i = 2; i <= vertices_number; i++) {
-        printf("%d - %d \t%.2f \n", parent[i], i, key[i]);
+        os << parent[i] << " - " << i << setw(10) << fixed << setprecision(2) << key[i] << "\n";
         total += key[i];
     }
-    cout << "total weight: " << total << "\n";
+    os << "total weight: " << total << "\n";
+}
+
+float Graph::getMSTWeight(){
+    return accumulate(key.begin() + 2, key.begin() + vertices_number + 1, 0.0f);
 }
 
 void Graph::primMST() {
