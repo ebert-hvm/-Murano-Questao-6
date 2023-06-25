@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <chrono>
 #include <numeric>
+#include <string>
 
 using namespace std;
 
